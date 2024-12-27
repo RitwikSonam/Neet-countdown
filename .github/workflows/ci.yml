@@ -30,15 +30,14 @@ jobs:
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin
           export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
           echo "y" | sdkmanager --install "platform-tools" "platforms;android-31" "build-tools;31.0.0" "ndk;21.4.7075529" "tools"
-          
-      - name: Check Aidl availability
+
+      - name: Verify AIDL Availability
         run: |
-          if ! command -v aidl &> /dev/null; then
-            echo "Aidl not found, please install it."
-            exit 1
-          else
-            echo "Aidl is available."
-          fi
+          echo "Checking for aidl..."
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
+          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin
+          export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+          aidl --version || (echo "Aidl not found, please install it." && exit 1)
 
       - name: Cache Buildozer Global Directory
         uses: actions/cache@v2
