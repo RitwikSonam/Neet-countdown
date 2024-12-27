@@ -21,23 +21,42 @@ jobs:
 
       - name: Install Android SDK
         run: |
+          # Install required tools
           sudo apt-get install -y wget unzip
+          
+          # Download the latest SDK command-line tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
+          
+          # Unzip SDK command line tools
           mkdir -p $HOME/android-sdk/cmdline-tools
           unzip cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
           mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/tools
+          
+          # Set environment variables
           export ANDROID_SDK_ROOT=$HOME/android-sdk
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin
           export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
-          echo "y" | sdkmanager --install "platform-tools" "platforms;android-31" "build-tools;31.0.0" "ndk;21.4.7075529" "tools"
+
+          # Install necessary SDK components, including build-tools, NDK, and platform tools
+          echo "y" | sdkmanager --install "platform-tools" "platforms;android-31" "build-tools;31.0.0" "ndk;21.4.7075529" "tools" "cmdline-tools;latest"
+
+          # Ensure the sdkmanager is updated (sometimes this resolves missing tools)
+          sdkmanager --update
 
       - name: Verify AIDL Availability
         run: |
+          # Verify aidl availability
           echo "Checking for aidl..."
           export ANDROID_SDK_ROOT=$HOME/android-sdk
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin
           export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
-          aidl --version || (echo "Aidl not found, please install it." && exit 1)
+          
+          if ! command -v aidl &> /dev/null; then
+            echo "Aidl not found, please install it."
+            exit 1
+          else
+            echo "Aidl is available."
+          fi
 
       - name: Cache Buildozer Global Directory
         uses: actions/cache@v2
