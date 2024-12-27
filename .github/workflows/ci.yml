@@ -40,18 +40,22 @@ jobs:
           # Install necessary SDK components, including build-tools, NDK, and platform tools
           echo "y" | sdkmanager --install "platform-tools" "platforms;android-31" "build-tools;31.0.0" "ndk;21.4.7075529" "tools" "cmdline-tools;latest"
 
-          # Ensure the sdkmanager is updated (sometimes this resolves missing tools)
+          # Ensure sdkmanager is updated (sometimes this resolves missing tools)
           sdkmanager --update
+
+          # Verify the build-tools directory
+          echo "Checking build-tools for aidl..."
+          find $ANDROID_SDK_ROOT/build-tools -name "aidl" || (echo "Aidl not found in build-tools directory" && exit 1)
 
       - name: Verify AIDL Availability
         run: |
-          # Verify aidl availability
+          # Check if aidl is available in the build-tools directory
           echo "Checking for aidl..."
           export ANDROID_SDK_ROOT=$HOME/android-sdk
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin
           export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
           
-          if ! command -v aidl &> /dev/null; then
+          if ! find $ANDROID_SDK_ROOT/build-tools -name "aidl" &> /dev/null; then
             echo "Aidl not found, please install it."
             exit 1
           else
