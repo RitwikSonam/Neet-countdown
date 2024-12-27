@@ -1,0 +1,79 @@
+# Define the root widget (BoxLayout)
+<NEETApp>:
+    orientation: "vertical"
+
+    # Gradient Background
+    GradientBackground:
+        size: root.size
+        pos: root.pos
+
+    # Welcome Message
+    Label:
+        text: "Hi Nibedita,\nYou will definitely crack NEET AIIMS!"
+        font_size: '20sp'
+        size_hint: 1, 0.2
+        halign: 'center'
+
+    # Exam Date Picker
+    Label:
+        text: "Select your exam date:"
+        font_size: '16sp'
+        size_hint: 1, 0.1
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, 0.1
+
+        Spinner:
+            id: year_spinner
+            text: "2025"
+            values: ['2024', '2025']
+            size_hint: 0.3, 1
+
+        Spinner:
+            id: month_spinner
+            text: "1"
+            values: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+            size_hint: 0.3, 1
+
+        Spinner:
+            id: day_spinner
+            text: "1"
+            values: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']
+            size_hint: 0.3, 1
+
+    # Set Exam Date Button
+    Button:
+        text: "Set Exam Date"
+        size_hint: 0.5, 0.1
+        pos_hint: {"center_x": 0.5}
+        on_release: root.set_date()
+
+    # Countdown Timer
+    Label:
+        id: countdown_label
+        text: "Countdown: Not Set"
+        font_size: '18sp'
+        size_hint: 1, 0.2
+
+    # Motivational Quote
+    Label:
+        id: quote_label
+        text: "Motivational Quote: " + root.get_random_quote()
+        font_size: '16sp'
+        size_hint: 1, 0.2
+        halign: 'center'
+
+    # Reminder Button
+    Button:
+        text: "Remind me every day"
+        size_hint: 0.5, 0.1
+        pos_hint: {"center_x": 0.5}
+        on_release: root.set_reminder()
+
+    # Footer
+    Label:
+        text: "Designed & Developed By Ritwik (Brother)"
+        font_size: '14sp'
+        size_hint: 1, 0.1
+        halign: 'right'
