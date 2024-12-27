@@ -12,12 +12,11 @@ package.domain = org.test
 # (str) Source code where the main.py live
 source.dir = .
 
-# In the buildozer.spec file
-# other settings
 android.sdk_path = /home/runner/android-sdk
-android.ndk_path = /home/runner/android-ndk
+android.ndk_path = /home/runner/android-sdk/ndk/21.4.7075529
 android.api = 31
 android.build_tools = 31.0.0
+
 
 
 # (list) Source files to include (let empty to include all the files)
