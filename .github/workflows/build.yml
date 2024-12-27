@@ -30,6 +30,15 @@ jobs:
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin
           export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
           echo "y" | sdkmanager --install "platform-tools" "platforms;android-31" "build-tools;31.0.0" "ndk;21.4.7075529" "tools"
+          
+      - name: Check Aidl availability
+        run: |
+          if ! command -v aidl &> /dev/null; then
+            echo "Aidl not found, please install it."
+            exit 1
+          else
+            echo "Aidl is available."
+          fi
 
       - name: Cache Buildozer Global Directory
         uses: actions/cache@v2
